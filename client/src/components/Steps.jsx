@@ -2,7 +2,7 @@ import React from "react";
 import { steps } from "../constants";
 
 const StepBlock = ({ id, step, info }) => (
-  <div className="p-8 drop-shadow-lg">
+  <div className="p-8 drop-shadow-lg hover:drop-shadow-xl">
     <h4 className="text-lg font-bold py-20 bg-blue-800 text-white rounded-t-lg">
       {step}
     </h4>

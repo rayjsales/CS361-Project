@@ -6,6 +6,7 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 
 import { Home, SearchPage, FAQs } from "./pages";
+import Footer from "./components/Footer";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -45,6 +46,9 @@ function App() {
           <Route path="/search-page" element={<SearchPage />} />
           <Route path="/FAQs" element={<FAQs />} />
         </Routes>
+        <footer>
+          <Footer />
+        </footer>
       </main>
     </BrowserRouter>
   );

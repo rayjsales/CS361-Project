@@ -71,3 +71,42 @@ export const cuisines = [
     cuisine: "Vietnamese",
   },
 ];
+
+export const dishTypes = [
+  {
+    dish: "pizza",
+  },
+  {
+    dish: "sandwich",
+  },
+  {
+    dish: "coffee",
+  },
+  {
+    dish: "tea",
+  },
+  {
+    dish: "fries",
+  },
+  {
+    dish: "appetizer",
+  },
+  {
+    dish: "hot dish",
+  },
+  {
+    dish: "cold dish",
+  },
+  {
+    dish: "sushi",
+  },
+  {
+    dish: "noddles",
+  },
+  {
+    dish: "soup",
+  },
+  {
+    dish: "salad",
+  },
+];

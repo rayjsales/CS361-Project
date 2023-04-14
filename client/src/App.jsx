@@ -18,18 +18,18 @@ function App() {
           <Link className="mx-5 text-blue-600 font-bold text-[20px]" to="/">
             FLAVOR-IT
           </Link>
-          <HashLink className="mx-5" to="/#features">
+          <HashLink className="mx-5 hover:text-blue-600" to="/#features">
             Features
           </HashLink>
         </div>
         <div>
-          <Link className="mx-5" to="/">
+          <Link className="mx-5 hover:text-blue-600" to="/">
             Home
           </Link>
-          <Link className="mx-5" to="/search-page">
+          <Link className="mx-5 hover:text-blue-600" to="/search-page">
             Search Page
           </Link>
-          <Link className="mx-5" to="/faqs">
+          <Link className="mx-5 hover:text-blue-600" to="/faqs">
             FAQs
           </Link>
           <Link

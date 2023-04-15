@@ -29,6 +29,7 @@ const SearchPage = () => {
     console.log(ll);
     setAddress(value);
     setCoordinates(ll);
+    setValidLocation(true);
   };
 
   const handleLocation = (e) => {
@@ -53,7 +54,7 @@ const SearchPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     let obj = {
-      place: location,
+      place: address,
       cuis: cuisine,
       dish: dish,
     };
@@ -66,40 +67,8 @@ const SearchPage = () => {
       <p>lat: {coordinates.lat}</p>
       <p>lng: {coordinates.lng}</p>
       <p>Address: {address}</p>
-      <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-          <div key={suggestions.description}>
-            <input
-              {...getInputProps({
-                placeholder: "Search Places ...",
-                className: "location-search-input",
-              })}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map((suggestion) => {
-                const className = suggestion.active
-                  ? "suggestion-item--active"
-                  : "suggestion-item";
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                  : { backgroundColor: "#ffffff", cursor: "pointer" };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>
+      <p>{cuisine}</p>
+      <p>{dish}</p>
       <h3 className="font-bold py-5 my-4 text-3xl">Search for your next dish here</h3>
       <form onSubmit={handleSubmit}>
         <div className="my-4">
@@ -108,15 +77,50 @@ const SearchPage = () => {
               Enter City / Zip Code<span className="text-red-500">*</span>
             </label>
           </div>
-          <input
-            type="text"
-            id="location"
-            placeholder="Enter a City or Zip Code (ex. 'New York City' or '100013')"
-            value={location}
-            onChange={handleLocation}
-            required
-            className="w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#356fce] focus:border-[#356fce] outline-none block p-3"
-          />
+          <PlacesAutocomplete
+            value={address}
+            onChange={setAddress}
+            onSelect={handleSelect}
+          >
+            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+              <div key={suggestions.description}>
+                <input
+                  type="text"
+                  id="location"
+                  placeholder="Enter a City or Zip Code (ex. 'New York City' or '100013')"
+                  required
+                  {...getInputProps({
+                    placeholder:
+                      "Enter a City or Zip Code (ex. 'New York City' or '100013')",
+                    className:
+                      "location-search-input w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#356fce] focus:border-[#356fce] outline-none block p-3 relative",
+                  })}
+                />
+                <div className="autocomplete-dropdown-container absolute text-left">
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map((suggestion) => {
+                    const className = suggestion.active
+                      ? "suggestion-item--active"
+                      : "suggestion-item";
+                    // inline style for demonstration purpose
+                    const style = suggestion.active
+                      ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                      : { backgroundColor: "#ffffff", cursor: "pointer" };
+                    return (
+                      <div
+                        {...getSuggestionItemProps(suggestion, {
+                          className,
+                          style,
+                        })}
+                      >
+                        <span>{suggestion.description}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </PlacesAutocomplete>
         </div>
         <div className="my-4">
           <div className="flex items-center gap-2 mb-2">

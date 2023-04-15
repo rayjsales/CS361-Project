@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form } from "react-router-dom";
 
 import { cuisines, dishTypes } from "../constants";
+import Results from "../components/Results";
 
 const SearchPage = () => {
   const [location, setLocation] = useState("");
@@ -10,6 +11,7 @@ const SearchPage = () => {
   const [cuisineValid, setValidCuisine] = useState(false);
   const [advanced, setAdv] = useState(false);
   const [dish, setDish] = useState("");
+  const [searchSubmitted, setSubmitted] = useState(false);
 
   const handleLocation = (e) => {
     setLocation(e.target.value);
@@ -22,7 +24,7 @@ const SearchPage = () => {
 
   const handleSection = (e) => {
     setAdv(!advanced);
-    // Clear out the field
+    // Clear out the fieldß
     setDish("");
   };
 
@@ -30,13 +32,14 @@ const SearchPage = () => {
     setDish(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     let obj = {
       place: location,
       cuis: cuisine,
       dish: dish,
     };
+    setSubmitted(true);
     console.log(obj);
   };
 
@@ -122,6 +125,8 @@ const SearchPage = () => {
           Submit
         </button>
       </form>
+
+      <Results searchSubmitted={searchSubmitted} />
     </section>
   );
 };

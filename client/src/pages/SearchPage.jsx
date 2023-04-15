@@ -3,6 +3,10 @@ import { Form } from "react-router-dom";
 
 import { cuisines, dishTypes } from "../constants";
 import Results from "../components/Results";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 
 const SearchPage = () => {
   const [location, setLocation] = useState("");
@@ -12,6 +16,20 @@ const SearchPage = () => {
   const [advanced, setAdv] = useState(false);
   const [dish, setDish] = useState("");
   const [searchSubmitted, setSubmitted] = useState(false);
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    lat: null,
+    lng: null,
+  });
+
+  const handleSelect = async (value) => {
+    const results = await geocodeByAddress(value);
+    console.log(results);
+    const ll = await getLatLng(results[0]);
+    console.log(ll);
+    setAddress(value);
+    setCoordinates(ll);
+  };
 
   const handleLocation = (e) => {
     setLocation(e.target.value);
@@ -44,7 +62,44 @@ const SearchPage = () => {
   };
 
   return (
-    <section className="flex items-center flex-col pb-10">
+    <section className="flex items-center flex-col">
+      <p>lat: {coordinates.lat}</p>
+      <p>lng: {coordinates.lng}</p>
+      <p>Address: {address}</p>
+      <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          <div key={suggestions.description}>
+            <input
+              {...getInputProps({
+                placeholder: "Search Places ...",
+                className: "location-search-input",
+              })}
+            />
+            <div className="autocomplete-dropdown-container">
+              {loading && <div>Loading...</div>}
+              {suggestions.map((suggestion) => {
+                const className = suggestion.active
+                  ? "suggestion-item--active"
+                  : "suggestion-item";
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                  : { backgroundColor: "#ffffff", cursor: "pointer" };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </PlacesAutocomplete>
       <h3 className="font-bold py-5 my-4 text-3xl">Search for your next dish here</h3>
       <form onSubmit={handleSubmit}>
         <div className="my-4">
@@ -119,7 +174,7 @@ const SearchPage = () => {
         </div>
         <button
           type="submit"
-          className="font-inter font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
+          className="font-inter w-[150px] font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
           disabled={!locationValid || !cuisineValid}
         >
           Submit

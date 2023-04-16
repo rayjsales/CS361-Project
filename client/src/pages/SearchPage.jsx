@@ -9,7 +9,6 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 
 const SearchPage = () => {
-  const [location, setLocation] = useState("");
   const [locationValid, setValidLocation] = useState(false);
   const [cuisine, setCuisine] = useState("");
   const [cuisineValid, setValidCuisine] = useState(false);
@@ -21,6 +20,7 @@ const SearchPage = () => {
     lat: null,
     lng: null,
   });
+  const [errorMessage, setErrorMessage] = useState(false);
 
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
@@ -32,19 +32,20 @@ const SearchPage = () => {
     setValidLocation(true);
   };
 
-  const handleLocation = (e) => {
-    setLocation(e.target.value);
-    setValidLocation(true);
-  };
   const handleCuisine = (e) => {
     setCuisine(e.target.value);
     setValidCuisine(true);
+    setErrorMessage(false);
   };
 
   const handleSection = (e) => {
-    setAdv(!advanced);
-    // Clear out the fieldß
-    setDish("");
+    if (!cuisineValid) {
+      setErrorMessage(true);
+    } else {
+      setAdv(!advanced);
+      // Clear out the field
+      setDish("");
+    }
   };
 
   const handleDish = (e) => {
@@ -96,7 +97,7 @@ const SearchPage = () => {
                       "location-search-input w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#356fce] focus:border-[#356fce] outline-none block p-3 relative",
                   })}
                 />
-                <div className="autocomplete-dropdown-container absolute text-left">
+                <div className="autocomplete-dropdown-container absolute text-left w-96">
                   {loading && <div>Loading...</div>}
                   {suggestions.map((suggestion) => {
                     const className = suggestion.active
@@ -104,12 +105,12 @@ const SearchPage = () => {
                       : "suggestion-item";
                     // inline style for demonstration purpose
                     const style = suggestion.active
-                      ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                      ? { backgroundColor: "#AAD7F3", cursor: "pointer" }
                       : { backgroundColor: "#ffffff", cursor: "pointer" };
                     return (
                       <div
                         {...getSuggestionItemProps(suggestion, {
-                          className,
+                          className: "p-2 text-sm",
                           style,
                         })}
                       >
@@ -132,6 +133,7 @@ const SearchPage = () => {
             className="w-80 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             value={cuisine}
             onChange={handleCuisine}
+            required
           >
             <option value="" disabled>
               Select a Cuisine
@@ -148,6 +150,11 @@ const SearchPage = () => {
           <p className="italic cursor-pointer hover:underline" onClick={handleSection}>
             Advanced Search
           </p>
+          {errorMessage && (
+            <p className="italic py-4 text-red-700 ">
+              Please select a Cuisine first before using advanced search.
+            </p>
+          )}
           {advanced && (
             <div>
               <div className="flex items-center gap-2 mb-2">
@@ -176,16 +183,23 @@ const SearchPage = () => {
             </div>
           )}
         </div>
-        <button
-          type="submit"
-          className="font-inter w-[150px] font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
-          disabled={!locationValid || !cuisineValid}
-        >
-          Submit
-        </button>
+        {locationValid && cuisineValid ? (
+          <button
+            type="submit"
+            className="font-inter w-[150px] font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
+          >
+            Submit
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="font-inter w-[150px] font-medium bg-gray-400 text-black px-4 py-2 rounded-md focus:ring-gray-300 focus:border-gray-300"
+          >
+            Submit
+          </button>
+        )}
       </form>
-
-      <Results searchSubmitted={searchSubmitted} />
+      <Results />
     </section>
   );
 };

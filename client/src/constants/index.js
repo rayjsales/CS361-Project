@@ -179,7 +179,7 @@ export const resultsTest = [
   {
     dish: "Tuna Tempura Roll",
     description: "bell pepper, shiitake, carrot, asparagus, sesame seed",
-    price: "$14.00",
+    price: "$4.00",
     address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
   },
   {

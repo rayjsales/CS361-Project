@@ -15,7 +15,7 @@ const Hero = () => {
           </p>
           <Link
             to="/search-page"
-            className="font-inter font-medium bg-blue-600 text-white px-6 py-4 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
+            className="font-inter font-medium bg-blue-600 text-white px-6 py-4 drop-shadow-md rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400 hover:drop-shadow-xl"
           >
             Find Meals
           </Link>

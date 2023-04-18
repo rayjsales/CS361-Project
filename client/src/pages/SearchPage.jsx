@@ -3,7 +3,7 @@ import { Form } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MdHelpCenter } from "react-icons/md";
 
-import { cuisines, dishTypes } from "../constants";
+import { cuisines, dishTypes, cities } from "../constants";
 import Results from "../components/Results";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -17,14 +17,15 @@ const SearchPage = () => {
   const [advanced, setAdv] = useState(false);
   const [dish, setDish] = useState("");
   const [searchSubmitted, setSubmitted] = useState(false);
-  const [address, setAddress] = useState("");
-  const [coordinates, setCoordinates] = useState({
+  //const [address, setAddress] = useState("");
+  /*const [coordinates, setCoordinates] = useState({
     lat: null,
     lng: null,
-  });
+  });*/
+  const [city, setCity] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
 
-  const handleSelect = async (value) => {
+  /*const handleSelect = async (value) => {
     const results = await geocodeByAddress(value);
     console.log(results);
     const ll = await getLatLng(results[0]);
@@ -32,7 +33,7 @@ const SearchPage = () => {
     setAddress(value);
     setCoordinates(ll);
     setValidLocation(true);
-  };
+  };*/
 
   const handleCuisine = (e) => {
     setCuisine(e.target.value);
@@ -57,7 +58,7 @@ const SearchPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     let obj = {
-      place: address,
+      place: city,
       cuis: cuisine,
       dish: dish,
     };
@@ -65,17 +66,62 @@ const SearchPage = () => {
     console.log(obj);
   };
 
+  const handleCity = (event) => {
+    if (event.target.value == 0) {
+      setValidLocation(false);
+    }
+    setCity(event.target.value);
+  };
+
+  const searchCuisinesFromCity = (searchTerm) => {
+    // Run API fetch here to get a list of all the cuisines
+    setCity(searchTerm);
+    setValidLocation(true);
+    console.log(searchTerm);
+  };
+
+  const filteredCities = cities.filter((item) => {
+    const searchTerm = city.toLowerCase();
+    const cityName = item.city.toLowerCase();
+    return searchTerm && cityName.startsWith(searchTerm) && cityName !== searchTerm;
+  });
+
   return (
     <section className="flex items-center flex-col">
       <h3 className="font-bold py-5 my-4 text-3xl">Search for your next dish here</h3>
       <form onSubmit={handleSubmit} className="pb-12">
-        <div className="my-4">
+        <div className="my-4 relative">
           <div className="flex items-center gap-2 mb-2">
             <label htmlFor="location" className="block text-sm font-medium text-gray-900">
               Enter City / Zip Code<span className="text-red-500">*</span>
             </label>
           </div>
-          <PlacesAutocomplete
+          <input
+            type="text"
+            value={city}
+            onChange={handleCity}
+            className="w-80 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Enter a City (ex. 'Portland, OR')"
+          />
+          {city.length > 0 && !locationValid && (
+            <div className="absolute w-full drop-shadow-lg">
+              {filteredCities.length > 0 ? (
+                filteredCities.slice(0, 10).map((item) => (
+                  <div
+                    key={item.city}
+                    onClick={() => searchCuisinesFromCity(item.city)}
+                    className="bg-white hover:bg-blue-300 w-full py-2"
+                  >
+                    {item.city}
+                  </div>
+                ))
+              ) : (
+                <div className="bg-white w-full py-2">Sorry, no results in that city</div>
+              )}
+            </div>
+          )}
+
+          {/* <PlacesAutocomplete
             value={address}
             onChange={setAddress}
             onSelect={handleSelect}
@@ -118,7 +164,7 @@ const SearchPage = () => {
                 </div>
               </div>
             )}
-          </PlacesAutocomplete>
+          </PlacesAutocomplete> */}
         </div>
         <div className="my-4">
           <div className="flex items-center gap-2 mb-2">
@@ -127,7 +173,7 @@ const SearchPage = () => {
             </label>
           </div>
           <select
-            className="w-80 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="w-80 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             value={cuisine}
             onChange={handleCuisine}
             required
@@ -149,7 +195,7 @@ const SearchPage = () => {
           </p>
           {errorMessage && (
             <p className="italic py-4 text-red-700 ">
-              Please select a Cuisine first before using advanced search.
+              Select a Cuisine first before advanced search.
             </p>
           )}
           {advanced && (
@@ -163,7 +209,7 @@ const SearchPage = () => {
                 </label>
               </div>
               <select
-                className="w-80 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="w-80 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 value={dish}
                 onChange={handleDish}
                 disabled={!cuisineValid}

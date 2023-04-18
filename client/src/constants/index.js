@@ -25,6 +25,7 @@ export const cuisines = [
   {
     id: 1,
     cuisine: "American",
+    dish: [],
   },
   {
     id: 2,
@@ -41,6 +42,10 @@ export const cuisines = [
   {
     id: 5,
     cuisine: "Greek",
+  },
+  {
+    id: 52,
+    cuisine: "Filipino",
   },
   {
     id: 6,
@@ -144,48 +149,158 @@ export const resultsTest = [
     dish: "Soul Roll",
     description: "Tempura fried alaskan king crab. Jalapeno, cream cheese, and carrots.",
     price: "$16.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
   },
   {
     dish: "Summer Roll",
     description: "Tuna, salmon, sesame oil, and chives.",
     price: "$14.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
   },
   {
     dish: "Veggie Tempura Roll",
     description: "bell pepper, shiitake, carrot, asparagus, sesame seed",
     price: "$14.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
   },
   {
     dish: "California Roll",
     description: "bell pepper, shiitake, carrot, asparagus, sesame seed",
     price: "$14.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
   },
   {
     dish: "Dragon Roll",
     description: "Tempura fried alaskan king crab. Jalapeno, cream cheese, and carrots.",
     price: "$16.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
   },
   {
     dish: "Salmon Roll",
     description: "Tuna, salmon, sesame oil, and chives.",
     price: "$14.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
   },
   {
     dish: "Tuna Tempura Roll",
     description: "bell pepper, shiitake, carrot, asparagus, sesame seed",
     price: "$4.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
   },
   {
     dish: "Crab Tempura Roll",
     description: "bell pepper, shiitake, carrot, asparagus, sesame seed",
     price: "$14.00",
-    address: "Jinsei Sushi \n 1830 29th St. \n New York City, NY 100130",
+    address: "Jinsei Sushi \n 1830 29th St. \n Seattle, WA 98105",
+    cuisine: ["sushi"],
+  },
+];
+
+export const cities = [
+  {
+    city: "Birmingham, AL",
+  },
+  {
+    city: "Hoover, AL",
+  },
+  {
+    city: "Jamison, AL",
+  },
+  {
+    city: "Gardendale, AL",
+  },
+  {
+    city: "Bessemer, AL",
+  },
+  {
+    city: "Sylvan Springs, AL",
+  },
+  {
+    city: "Adamsville, AL",
+  },
+  {
+    city: "Portland, OR",
+  },
+  {
+    city: "Sandy, OR",
+  },
+  {
+    city: "Gresham, OR",
+  },
+  {
+    city: "Hoover, AL",
+  },
+  {
+    city: "Zillah, WA",
+  },
+  {
+    city: "Union Gap, WA",
+  },
+  {
+    city: "Toppenish, WA",
+  },
+  {
+    city: "Lacey, WA",
+  },
+  {
+    city: "Tumwater, WA",
+  },
+  {
+    city: "Yelm, WA",
+  },
+  {
+    city: "Kirkland, WA",
+  },
+  {
+    city: "Seattle, WA",
+  },
+  {
+    city: "Everett, WA",
+  },
+  {
+    city: "Fox Lake, IL",
+  },
+  {
+    city: "Round Lake, IL",
+  },
+  {
+    city: "Linderhurst, IL",
+  },
+  {
+    city: "Antioch, IL",
+  },
+  {
+    city: "Lake Villa, IL",
+  },
+  {
+    city: "Springfield, IL",
+  },
+  {
+    city: "San Jose, CA",
+  },
+  {
+    city: "San Francisco, CA",
+  },
+  {
+    city: "San Diego, CA",
+  },
+  {
+    city: "South Plainfield, NJ",
+  },
+  {
+    city: "South Amboy, NJ",
+  },
+  {
+    city: "Springifled, NJ",
+  },
+  {
+    city: "Salt Lake City, UT",
   },
 ];

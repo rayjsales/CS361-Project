@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Form } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { MdHelpCenter } from "react-icons/md";
 
 import { cuisines, dishTypes } from "../constants";
 import Results from "../components/Results";
@@ -65,13 +67,8 @@ const SearchPage = () => {
 
   return (
     <section className="flex items-center flex-col">
-      <p>lat: {coordinates.lat}</p>
-      <p>lng: {coordinates.lng}</p>
-      <p>Address: {address}</p>
-      <p>{cuisine}</p>
-      <p>{dish}</p>
       <h3 className="font-bold py-5 my-4 text-3xl">Search for your next dish here</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="pb-12">
         <div className="my-4">
           <div className="flex items-center gap-2 mb-2">
             <label htmlFor="location" className="block text-sm font-medium text-gray-900">
@@ -199,7 +196,13 @@ const SearchPage = () => {
           </button>
         )}
       </form>
-      <Results />
+      <div className="w-full max-w-6xl text-right pb-3 inline-block">
+        <Link to="/FAQs" className="italic">
+          <MdHelpCenter className="inline-block text-2xl" />
+          <span className="text-sm">Got questions, visit the FAQs Page</span>
+        </Link>
+      </div>
+      {searchSubmitted && <Results />}
     </section>
   );
 };

@@ -3,7 +3,7 @@ import { steps } from "../constants";
 
 const StepBlock = ({ id, step, info }) => (
   <div className="p-8 drop-shadow-lg hover:drop-shadow-xl">
-    <h4 className="text-lg font-bold py-20 bg-blue-800 text-white rounded-t-lg">
+    <h4 className="text-lg font-bold py-20 bg-blue-800 hover:bg-blue-500 text-white rounded-t-lg">
       {step}
     </h4>
     <p className="p-8 bg-white rounded-b-lg min-h-[110px]">{info}</p>

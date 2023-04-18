@@ -21,6 +21,7 @@ const Results = () => {
     setData(
       resultsTest.filter((dish) => parseInt(dish.price.slice(1)) <= parseInt(maxPrice))
     );
+    setFilterButton(false);
     console.log(initialData);
   };
 

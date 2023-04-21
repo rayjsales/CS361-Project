@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MdHelpCenter } from "react-icons/md";
 
-import { cuisines, dishTypes, cities } from "../constants";
+import { cuisines, dishTypes } from "../constants";
 import Results from "../components/Results";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
 
 const SearchPage = () => {
   const [locationValid, setValidLocation] = useState(false);
@@ -17,23 +13,9 @@ const SearchPage = () => {
   const [advanced, setAdv] = useState(false);
   const [dish, setDish] = useState("");
   const [searchSubmitted, setSubmitted] = useState(false);
-  //const [address, setAddress] = useState("");
-  /*const [coordinates, setCoordinates] = useState({
-    lat: null,
-    lng: null,
-  });*/
+  const [cities, setCities] = useState([]);
   const [city, setCity] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
-
-  /*const handleSelect = async (value) => {
-    const results = await geocodeByAddress(value);
-    console.log(results);
-    const ll = await getLatLng(results[0]);
-    console.log(ll);
-    setAddress(value);
-    setCoordinates(ll);
-    setValidLocation(true);
-  };*/
 
   const handleCuisine = (e) => {
     setCuisine(e.target.value);
@@ -80,6 +62,20 @@ const SearchPage = () => {
     console.log(searchTerm);
   };
 
+  const fetchCities = async () => {
+    try {
+      const response = await fetch("http://localhost:9124/cities");
+      const data = await response.json();
+      setCities(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCities();
+  }, []);
+
   const filteredCities = cities.filter((item) => {
     const searchTerm = city.toLowerCase();
     const cityName = item.city.toLowerCase();
@@ -120,51 +116,6 @@ const SearchPage = () => {
               )}
             </div>
           )}
-
-          {/* <PlacesAutocomplete
-            value={address}
-            onChange={setAddress}
-            onSelect={handleSelect}
-          >
-            {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-              <div key={suggestions.description}>
-                <input
-                  type="text"
-                  id="location"
-                  placeholder="Enter a City or Zip Code (ex. 'New York City' or '100013')"
-                  required
-                  {...getInputProps({
-                    placeholder:
-                      "Enter a City or Zip Code (ex. 'New York City' or '100013')",
-                    className:
-                      "location-search-input w-96 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#356fce] focus:border-[#356fce] outline-none block p-3 relative",
-                  })}
-                />
-                <div className="autocomplete-dropdown-container absolute text-left w-96">
-                  {loading && <div>Loading...</div>}
-                  {suggestions.map((suggestion) => {
-                    const className = suggestion.active
-                      ? "suggestion-item--active"
-                      : "suggestion-item";
-                    // inline style for demonstration purpose
-                    const style = suggestion.active
-                      ? { backgroundColor: "#AAD7F3", cursor: "pointer" }
-                      : { backgroundColor: "#ffffff", cursor: "pointer" };
-                    return (
-                      <div
-                        {...getSuggestionItemProps(suggestion, {
-                          className: "p-2 text-sm",
-                          style,
-                        })}
-                      >
-                        <span>{suggestion.description}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </PlacesAutocomplete> */}
         </div>
         <div className="my-4">
           <div className="flex items-center gap-2 mb-2">

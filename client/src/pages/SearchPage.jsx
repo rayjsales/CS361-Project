@@ -55,11 +55,18 @@ const SearchPage = () => {
     setCity(event.target.value);
   };
 
-  const searchCuisinesFromCity = (searchTerm) => {
-    // Run API fetch here to get a list of all the cuisines
-    setCity(searchTerm);
-    setValidLocation(true);
-    console.log(searchTerm);
+  const searchCuisinesFromCity = async (searchTerm) => {
+    // Run API fetch here to get a list of all the cuisines. SearchTerm will be a string of 'city, state'. Pass this to the async to API
+    try {
+      console.log(searchTerm);
+      const response = await fetch(`http://localhost:9124/cuisines?param=${searchTerm}`);
+      const data = await response.json();
+      setCity(searchTerm);
+      setValidLocation(true);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const fetchCities = async () => {

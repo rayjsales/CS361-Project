@@ -35,6 +35,21 @@ app.get("/cities", function (req, res) {
   });
 });
 
+// Get cuisines from database, but then need to run microservice to get the just cuisines.
+app.get("/cuisines", (req, res) => {
+  const citySearch = req.query.param;
+  // Use the citySearch to fetch data from database
+  let query = `Select category from Restaurants where BINARY full_address LIKE '%${citySearch}%';`;
+  db.pool.query(query, function (err, results, fields) {
+    if (err) {
+      console.log(err);
+      res.sendStatus(400);
+    } else {
+      res.send(JSON.stringify(results));
+    }
+  });
+});
+
 /*
     LISTENER
 */

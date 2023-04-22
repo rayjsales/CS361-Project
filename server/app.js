@@ -50,6 +50,22 @@ app.get("/cuisines", (req, res) => {
   });
 });
 
+// Get dishes from database
+app.get("/dishes", (req, res) => {
+  const cuisine = req.query.param1;
+  const city = req.query.param2;
+  // Use the citySearch to fetch data from database
+  let query = `SELECT DISTINCT RestaurantMenus.category FROM Restaurants JOIN RestaurantMenus ON Restaurants.id = RestaurantMenus.restaurant_id WHERE Restaurants.category Like '%${cuisine}%' AND Restaurants.full_address LIKE '%${city}%';`;
+  db.pool.query(query, function (err, results, fields) {
+    if (err) {
+      console.log(err);
+      res.sendStatus(400);
+    } else {
+      res.send(JSON.stringify(results));
+    }
+  });
+});
+
 /*
     LISTENER
 */

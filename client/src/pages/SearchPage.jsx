@@ -17,13 +17,13 @@ const SearchPage = () => {
   const [cities, setCities] = useState([]);
   const [city, setCity] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
+  const [meals, setMeals] = useState(null);
 
   const handleCuisine = (e) => {
     // Use API to get the type of dishes, based on the city entered and the Cuisine selected
     setCuisine(e.target.value);
     setValidCuisine(true);
     setErrorMessage(false);
-    console.log(city);
     getDishes(e);
   };
 
@@ -53,16 +53,13 @@ const SearchPage = () => {
     setDish(e.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let obj = {
-      place: city,
-      cuis: cuisine,
-      dish: dish,
-    };
-    setSubmitted(true);
-    console.log(obj);
-  };
+  async function handleSubmit(event) {
+    const response = await fetch(
+      `http://localhost:9124/meals?cuisine=${cuisine}&city=${city}&dish=${dish}`
+    );
+    const data = await response.json();
+    setMeals(data);
+  }
 
   const handleCity = (event) => {
     if (event.target.value == 0) {
@@ -77,10 +74,10 @@ const SearchPage = () => {
       console.log(searchTerm);
       const response = await fetch(`http://localhost:9124/cuisines?param=${searchTerm}`);
       const data = await response.json();
+      console.log(data);
       // Send the data to another API (microservice) that will give back the Cuisines. Then setCuisines([]) to setCuisines(dataCuisines)
       setCity(searchTerm);
       setValidLocation(true);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -98,7 +95,11 @@ const SearchPage = () => {
 
   useEffect(() => {
     fetchCities();
-  }, []);
+    if (meals) {
+      console.log(meals);
+      setSubmitted(true);
+    }
+  }, [meals]);
 
   const filteredCities = cities.filter((item) => {
     const searchTerm = city.toLowerCase();
@@ -205,14 +206,15 @@ const SearchPage = () => {
         </div>
         {locationValid && cuisineValid ? (
           <button
-            type="submit"
+            type="button"
+            onClick={handleSubmit}
             className="font-inter w-[150px] font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
           >
             Submit
           </button>
         ) : (
           <button
-            type="submit"
+            type="button"
             className="font-inter w-[150px] font-medium bg-gray-400 text-black px-4 py-2 rounded-md focus:ring-gray-300 focus:border-gray-300"
           >
             Submit
@@ -225,7 +227,7 @@ const SearchPage = () => {
           <span className="text-sm">Got questions, visit the FAQs Page</span>
         </Link>
       </div>
-      {searchSubmitted && <Results />}
+      {searchSubmitted && meals && <Results key={meals.name} meals={meals} />}
     </section>
   );
 };

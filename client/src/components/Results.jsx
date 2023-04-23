@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { resultsTest } from "../constants";
 import Cards from "./Cards";
 
 // When using a backend to get the data, need to pass in a parameter with the json and all the dish info
-const Results = () => {
+const Results = ({ key, meals }) => {
   const [filterOpen, setFilterButton] = useState(false);
   const [maxPrice, setMaxPrice] = useState("");
-  const [initialData, setData] = useState(resultsTest);
+  const [initialData, setData] = useState(meals);
 
   const showFilter = () => {
     setFilterButton(!filterOpen);
@@ -24,6 +24,8 @@ const Results = () => {
     setFilterButton(false);
     console.log(initialData);
   };
+
+  useEffect(() => {}, [initialData, meals]);
 
   return (
     <section className="bg-gray-400 mt-10 pb-8 w-full">
@@ -71,7 +73,7 @@ const Results = () => {
       </div>
       <div className="grid md:grid-cols-4">
         {initialData.map((card) => (
-          <Cards key={card.dish} {...card} />
+          <Cards key={card.name} {...card} />
         ))}
       </div>
     </section>

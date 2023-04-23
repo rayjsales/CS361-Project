@@ -3,7 +3,7 @@ import { Form } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MdHelpCenter } from "react-icons/md";
 
-import { cuisines, dishTypes } from "../constants";
+import { cuisines } from "../constants";
 import Results from "../components/Results";
 
 const SearchPage = () => {
@@ -11,6 +11,7 @@ const SearchPage = () => {
   const [cuisine, setCuisine] = useState("");
   const [cuisineValid, setValidCuisine] = useState(false);
   const [advanced, setAdv] = useState(false);
+  const [dishTypes, setDishes] = useState([]);
   const [dish, setDish] = useState("");
   const [searchSubmitted, setSubmitted] = useState(false);
   const [cities, setCities] = useState([]);
@@ -18,9 +19,24 @@ const SearchPage = () => {
   const [errorMessage, setErrorMessage] = useState(false);
 
   const handleCuisine = (e) => {
+    // Use API to get the type of dishes, based on the city entered and the Cuisine selected
     setCuisine(e.target.value);
     setValidCuisine(true);
     setErrorMessage(false);
+    console.log(city);
+    getDishes(e);
+  };
+
+  const getDishes = async (e) => {
+    try {
+      const response = await fetch(
+        `http://localhost:9124/dishes?param1=${e.target.value}&param2=${city}`
+      );
+      const data = await response.json();
+      setDishes(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSection = (e) => {
@@ -61,6 +77,7 @@ const SearchPage = () => {
       console.log(searchTerm);
       const response = await fetch(`http://localhost:9124/cuisines?param=${searchTerm}`);
       const data = await response.json();
+      // Send the data to another API (microservice) that will give back the Cuisines. Then setCuisines([]) to setCuisines(dataCuisines)
       setCity(searchTerm);
       setValidLocation(true);
       console.log(data);
@@ -124,6 +141,8 @@ const SearchPage = () => {
             </div>
           )}
         </div>
+
+        {/**Section for selecting the Cuisine */}
         <div className="my-4">
           <div className="flex items-center gap-2 mb-2">
             <label htmlFor="location" className="block text-sm font-medium text-gray-900">
@@ -176,8 +195,8 @@ const SearchPage = () => {
                   Select a Dish
                 </option>
                 {dishTypes.map((option) => (
-                  <option key={option.dish} {...option} value={option.dish}>
-                    {option.dish}
+                  <option key={option.category} {...option} value={option.category}>
+                    {option.category}
                   </option>
                 ))}
               </select>

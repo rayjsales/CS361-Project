@@ -24,6 +24,12 @@ const SearchPage = () => {
     setCuisine(e.target.value);
     setValidCuisine(true);
     setErrorMessage(false);
+    // If Dish has been selected from the user previously, reset dish section and hide advanced section
+    if (dish !== "") {
+      setDish("");
+      setAdv(false);
+      setMeals(null);
+    }
     getDishes(e);
   };
 
@@ -68,16 +74,22 @@ const SearchPage = () => {
     setCity(event.target.value);
   };
 
-  const searchCuisinesFromCity = async (searchTerm) => {
+  const searchCuisinesFromCity = async (cityName) => {
     // Run API fetch here to get a list of all the cuisines. SearchTerm will be a string of 'city, state'. Pass this to the async to API
     try {
-      console.log(searchTerm);
-      const response = await fetch(`http://localhost:9124/cuisines?param=${searchTerm}`);
+      const response = await fetch(`http://localhost:9124/cuisines?param=${cityName}`);
       const data = await response.json();
       console.log(data);
       // Send the data to another API (microservice) that will give back the Cuisines. Then setCuisines([]) to setCuisines(dataCuisines)
-      setCity(searchTerm);
+      setCity(cityName);
       setValidLocation(true);
+      // Reset cuisine, dish, and meals if user had searched for something already
+      if (cuisine !== "") {
+        setCuisine("");
+        setDish("");
+        setAdv(false);
+        setMeals(null);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -106,6 +118,17 @@ const SearchPage = () => {
     const cityName = item.city.toLowerCase();
     return searchTerm && cityName.startsWith(searchTerm) && cityName !== searchTerm;
   });
+
+  const handleClear = () => {
+    // Clear all fields
+    setCity("");
+    setCuisine("");
+    setDish("");
+    setAdv(false);
+    setMeals(null);
+    setValidCuisine(false);
+    setValidLocation(false);
+  };
 
   return (
     <section className="flex items-center flex-col">
@@ -204,22 +227,31 @@ const SearchPage = () => {
             </div>
           )}
         </div>
-        {locationValid && cuisineValid ? (
+        <div className="flex items-center ">
+          {locationValid && cuisineValid ? (
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="font-inter w-[150px] mx-2 font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
+            >
+              Submit
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="font-inter w-[150px] mx-2 font-medium bg-gray-400 text-black px-4 py-2 rounded-md focus:ring-gray-300 focus:border-gray-300"
+            >
+              Submit
+            </button>
+          )}
           <button
             type="button"
-            onClick={handleSubmit}
-            className="font-inter w-[150px] font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
+            onClick={handleClear}
+            className="font-inter w-[150px] mx-2 font-medium bg-slate-300 px-4 py-2 rounded-md focus:ring-slate-300 focus:border-slate-300 hover:bg-slate-500 active:bg-slate-300"
           >
-            Submit
+            Clear Search
           </button>
-        ) : (
-          <button
-            type="button"
-            className="font-inter w-[150px] font-medium bg-gray-400 text-black px-4 py-2 rounded-md focus:ring-gray-300 focus:border-gray-300"
-          >
-            Submit
-          </button>
-        )}
+        </div>
       </form>
       <div className="w-full max-w-6xl text-right pb-3 inline-block">
         <Link to="/FAQs" className="italic">

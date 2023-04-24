@@ -16,21 +16,15 @@ var db = require("./database/db-connector");
 /*
     ROUTES
 */
+// Get Cities from the database, only where there are restaurants
 app.get("/cities", function (req, res) {
-  let query = `SELECT DISTINCT SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(full_address, ',', 3), ',', -2), 2) FROM Restaurants WHERE full_address LIKE '%,%' AND full_address NOT LIKE '%,%,%,%,%';`;
+  let query = `SELECT DISTINCT SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(Restaurants.full_address, ',', 3), ',', -2), 2) as city FROM Restaurants INNER JOIN RestaurantMenus ON Restaurants.id = RestaurantMenus.restaurant_id WHERE full_address LIKE '%,%' AND full_address NOT LIKE '%,%,%,%,%';`;
   db.pool.query(query, function (err, results, fields) {
     if (err) {
       console.log(err);
       res.sendStatus(400);
     } else {
-      const cities = results.map((result) => {
-        return {
-          city: result[
-            `SUBSTRING(SUBSTRING_INDEX(SUBSTRING_INDEX(full_address, ',', 3), ',', -2), 2)`
-          ],
-        };
-      });
-      res.send(JSON.stringify(cities));
+      res.send(JSON.stringify(results));
     }
   });
 });
@@ -79,7 +73,13 @@ app.get("/meals", (req, res) => {
         console.log(err);
         res.sendStatus(400);
       } else {
-        res.send(JSON.stringify(results));
+        const newMeals = results.map((meal, index) => {
+          return {
+            ...meal,
+            id: index + 1,
+          };
+        });
+        res.send(JSON.stringify(newMeals));
       }
     });
   } else {
@@ -89,7 +89,13 @@ app.get("/meals", (req, res) => {
         console.log(err);
         res.sendStatus(400);
       } else {
-        res.send(JSON.stringify(results));
+        const newMeals = results.map((meal, index) => {
+          return {
+            ...meal,
+            id: index + 1,
+          };
+        });
+        res.send(JSON.stringify(newMeals));
       }
     });
   }

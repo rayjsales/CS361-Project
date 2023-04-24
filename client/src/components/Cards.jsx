@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Cards = ({ name, description, price, restaurant, full_address }) => {
+const Cards = ({ id, name, description, price, restaurant, full_address }) => {
   return (
     <div className="text-left m-8 p-4 bg-white rounded-lg drop-shadow-lg min-h-[250px]">
       <h4 className="font-bold text-xl">{name}</h4>

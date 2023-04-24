@@ -19,7 +19,9 @@ const Results = ({ key, meals }) => {
   const handleFilter = (e) => {
     e.preventDefault();
     setData(
-      resultsTest.filter((dish) => parseInt(dish.price.slice(1)) <= parseInt(maxPrice))
+      initialData.filter(
+        (dish) => parseInt(dish.price.slice(0, -4)) <= parseInt(maxPrice)
+      )
     );
     setFilterButton(false);
     console.log(initialData);
@@ -27,7 +29,7 @@ const Results = ({ key, meals }) => {
 
   useEffect(() => {
     setData(meals);
-  }, [initialData, meals]);
+  }, [meals]);
 
   return (
     <section className="bg-gray-400 mt-10 pb-8 w-full">

@@ -60,6 +60,7 @@ const SearchPage = () => {
   };
 
   async function handleSubmit(event) {
+    event.preventDefault();
     const response = await fetch(
       `http://localhost:9124/meals?cuisine=${cuisine}&city=${city}&dish=${dish}`
     );
@@ -146,6 +147,7 @@ const SearchPage = () => {
             onChange={handleCity}
             className="w-80 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Enter a City (ex. 'Portland, OR')"
+            required
           />
           {city.length > 0 && !locationValid && (
             <div className="absolute w-full drop-shadow-lg">
@@ -238,14 +240,14 @@ const SearchPage = () => {
             </button>
           ) : (
             <button
-              type="button"
+              type="submit"
               className="font-inter w-[150px] mx-2 font-medium bg-gray-400 text-black px-4 py-2 rounded-md focus:ring-gray-300 focus:border-gray-300"
             >
               Submit
             </button>
           )}
           <button
-            type="button"
+            type="submit"
             onClick={handleClear}
             className="font-inter w-[150px] mx-2 font-medium bg-slate-300 px-4 py-2 rounded-md focus:ring-slate-300 focus:border-slate-300 hover:bg-slate-500 active:bg-slate-300"
           >

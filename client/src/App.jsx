@@ -27,7 +27,7 @@ function App() {
             Home
           </Link>
           <Link className="mx-5 hover:text-blue-600" to="/search-page">
-            Search Page
+            Search Meals
           </Link>
           <Link className="mx-5 hover:text-blue-600" to="/faqs">
             FAQs

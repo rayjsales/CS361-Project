@@ -12,7 +12,7 @@ export const steps = [
   {
     id: 3,
     step: "Step 3",
-    info: "Choose your dish",
+    info: "Choose your dish type (optional)",
   },
   {
     id: 4,

@@ -133,12 +133,12 @@ const SearchPage = () => {
 
   return (
     <section className="flex items-center flex-col">
-      <h3 className="font-bold py-5 my-4 text-3xl">Search for your next dish here</h3>
+      <h3 className="font-bold py-5 my-4 text-3xl">Search for your next meal here</h3>
       <form onSubmit={handleSubmit} className="pb-12">
         <div className="my-4 relative">
           <div className="flex items-center gap-2 mb-2">
             <label htmlFor="location" className="block text-sm font-medium text-gray-900">
-              Enter City / Zip Code<span className="text-red-500">*</span>
+              Enter City<span className="text-red-500">*</span>
             </label>
           </div>
           <input

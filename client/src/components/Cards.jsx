@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Cards = ({ id, name, description, price, restaurant, full_address }) => {
   return (
-    <div className="text-left m-8 p-4 bg-white rounded-lg drop-shadow-lg min-h-[250px]">
+    <div className="text-left m-8 p-4 bg-white rounded-lg drop-shadow-lg min-h-[250px] hover:drop-shadow-2xl">
       <h4 className="font-bold text-xl">{name}</h4>
       <p>{description}</p>
       <p className="font-bold text-lg">{price}</p>

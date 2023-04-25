@@ -52,6 +52,10 @@ export const cuisines = [
     cuisine: "Japanese",
   },
   {
+    id: 34,
+    cuisine: "Mexican",
+  },
+  {
     id: 7,
     cuisine: "Korean",
   },

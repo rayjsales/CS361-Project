@@ -60,6 +60,22 @@ app.get("/dishes", (req, res) => {
   });
 });
 
+// Get price range of the restuarant
+app.get("/restaurantPrice", (req, res) => {
+  const cuisine = req.query.cuisine;
+  const city = req.query.city;
+  // Use the city and cuisine parameters to fetch data from database
+  let query = `SELECT DISTINCT price_range from Restaurants WHERE full_address LIKE '%${city}%' AND category LIKE '%${cuisine}%' ORDER BY price_range;`;
+  db.pool.query(query, function (err, results, fields) {
+    if (err) {
+      console.log(err);
+      res.sendStatus(400);
+    } else {
+      res.send(JSON.stringify(results));
+    }
+  });
+});
+
 // Get the meals based on the city entered, cusine and if included the dishe
 app.get("/meals", (req, res) => {
   console.log(req.query);

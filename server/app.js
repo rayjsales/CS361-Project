@@ -74,9 +74,15 @@ app.get("/meals", (req, res) => {
         res.sendStatus(400);
       } else {
         const newMeals = results.map((meal, index) => {
+          const price = parseFloat(meal.price);
+          const formattedPrice = price.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          });
           return {
             ...meal,
             id: index + 1,
+            price: formattedPrice,
           };
         });
         res.send(JSON.stringify(newMeals));
@@ -90,9 +96,15 @@ app.get("/meals", (req, res) => {
         res.sendStatus(400);
       } else {
         const newMeals = results.map((meal, index) => {
+          const price = parseFloat(meal.price);
+          const formattedPrice = price.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          });
           return {
             ...meal,
             id: index + 1,
+            price: formattedPrice,
           };
         });
         res.send(JSON.stringify(newMeals));

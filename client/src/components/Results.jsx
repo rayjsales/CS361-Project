@@ -33,7 +33,7 @@ const Results = ({ key, meals }) => {
     if (maxPrice !== "") {
       setData(
         initialData.filter(
-          (dish) => parseInt(dish.price.slice(0, -4)) <= parseInt(maxPrice)
+          (dish) => parseFloat(dish.price.slice(1)) <= parseFloat(maxPrice)
         )
       );
     } else {

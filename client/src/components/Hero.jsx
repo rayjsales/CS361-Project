@@ -11,7 +11,7 @@ const Hero = () => {
           </h1>
           <p className="my-6 text-lg leading-8 text-gray-600">
             Search for meals from nearby restaurants or wherever you are, from specific
-            cuisines, to dishes as well as coffee or teas.
+            cuisines, to preferred dishes as well as coffee or teas.
           </p>
           <Link
             to="/search-page"

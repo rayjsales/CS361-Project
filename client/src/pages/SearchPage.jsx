@@ -3,7 +3,6 @@ import { Form } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MdHelpCenter } from "react-icons/md";
 
-import { cuisines } from "../constants";
 import Results from "../components/Results";
 
 const SearchPage = () => {
@@ -18,6 +17,7 @@ const SearchPage = () => {
   const [city, setCity] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
   const [meals, setMeals] = useState(null);
+  const [cuisines, setCuisines] = useState([]);
 
   const handleCuisine = (e) => {
     // Use API to get the type of dishes, based on the city entered and the Cuisine selected
@@ -80,16 +80,29 @@ const SearchPage = () => {
     try {
       const response = await fetch(`http://localhost:9124/cuisines?param=${cityName}`);
       const data = await response.json();
-      console.log(data);
-      // Send the data to another API (microservice) that will give back the Cuisines. Then setCuisines([]) to setCuisines(dataCuisines)
-      setCity(cityName);
-      setValidLocation(true);
-      // Reset cuisine, dish, and meals if user had searched for something already
-      if (cuisine !== "") {
-        setCuisine("");
-        setDish("");
-        setAdv(false);
-        setMeals(null);
+      try {
+        // Send the data to another API (microservice) that will give back the Cuisines. Then setCuisines([]) to setCuisines(dataCuisines)
+        const response2 = await fetch(`http://localhost:7777/distinct-values`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const updatedCuisines = await response2.json();
+        console.log(await updatedCuisines);
+        setCuisines(updatedCuisines);
+        setCity(cityName);
+        setValidLocation(true);
+        // Reset cuisine, dish, and meals if user had searched for something already
+        if (cuisine !== "") {
+          setCuisine("");
+          setDish("");
+          setAdv(false);
+          setMeals(null);
+        }
+      } catch (err) {
+        console.log(err);
       }
     } catch (error) {
       console.log(error);
@@ -184,9 +197,9 @@ const SearchPage = () => {
             <option value="" disabled>
               Select a Cuisine
             </option>
-            {cuisines.map((option) => (
-              <option key={option.id} {...option} value={option.cuisine}>
-                {option.cuisine}
+            {cuisines.map((option, index) => (
+              <option key={index} value={option}>
+                {option}
               </option>
             ))}
           </select>
@@ -220,8 +233,8 @@ const SearchPage = () => {
                 <option value="" disabled>
                   Select a Dish
                 </option>
-                {dishTypes.map((option) => (
-                  <option key={option.category} {...option} value={option.category}>
+                {dishTypes.map((option, index) => (
+                  <option key={index} {...option} value={option.category}>
                     {option.category}
                   </option>
                 ))}

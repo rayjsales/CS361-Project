@@ -81,6 +81,8 @@ app.get("/meals", (req, res) => {
   console.log(req.query);
   const cuisine = req.query.cuisine;
   const city = req.query.city;
+
+  // Search for meals where the cuisine, city, and type of dish is inputted
   if (req.query.dish) {
     const dish = req.query.dish;
     let query = `SELECT t1.name, t1.description, t1.price, t2.name restaurant, t2.full_address FROM RestaurantMenus t1 INNER JOIN Restaurants t2 ON t1.restaurant_id = t2.id WHERE t2.category Like '%${cuisine}%' AND t2.full_address Like '%${city}%' AND t1.category = '${dish}';`;

@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import { resultsTest } from "../constants";
 import Cards from "./Cards";
 import { IoMdCloseCircle } from "react-icons/io";
-import FilterDishes from "./FilterDishes";
 
 // When using a backend to get the data, need to pass in a parameter with the json and all the dish info
-const Results = ({ key, meals, dishTypes }) => {
+const Results = ({ key, meals }) => {
   const [filterOpen, setFilterButton] = useState(false);
   const [maxPrice, setMaxPrice] = useState("");
   const [initialData, setData] = useState(meals);
   const [displayCount, setDisplayCount] = useState(12);
   const [sortOpen, setSortButton] = useState(false);
-  const [dishes, setDishes] = useState(dishTypes);
 
   const showFilter = () => {
     setFilterButton(!filterOpen);
@@ -34,6 +32,7 @@ const Results = ({ key, meals, dishTypes }) => {
   // its 12.00 USD, where we want $12.00.
   const handleFilter = (e) => {
     e.preventDefault();
+    // Check if there is a max price has been inputted and no Dish Type
     if (maxPrice !== "") {
       setData(
         initialData.filter(
@@ -158,15 +157,13 @@ const Results = ({ key, meals, dishTypes }) => {
                   </div>
                   <form onSubmit={handleFilter}>
                     <div className="grid grid-cols-2">
-                      <label>Max Price</label>
+                      <label>Max Price ($)</label>
                       <input
                         type="number"
                         value={maxPrice}
                         onChange={handleMaxPrice}
-                        className="w-24 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="w-30 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
-                      <label className="pt-2">Dish Type</label>
-                      <FilterDishes dishes={dishTypes} />
                     </div>
                     <div className="grid grid-cols-2 mt-4">
                       <button

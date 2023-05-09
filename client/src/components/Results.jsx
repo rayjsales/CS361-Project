@@ -9,9 +9,11 @@ const Results = ({ key, meals }) => {
   const [maxPrice, setMaxPrice] = useState("");
   const [initialData, setData] = useState(meals);
   const [displayCount, setDisplayCount] = useState(12);
+  const [sortOpen, setSortButton] = useState(false);
 
   const showFilter = () => {
     setFilterButton(!filterOpen);
+    setSortButton(false);
   };
 
   const handleShowMore = () => {
@@ -40,12 +42,46 @@ const Results = ({ key, meals }) => {
       setData(meals);
     }
     setFilterButton(false);
-    console.log(initialData);
+  };
+
+  // Sort the meals from A to Z
+  const sortAtoZ = () => {
+    const sortedMeals = initialData.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    setData(sortedMeals);
+    showSort();
+  };
+
+  // Sort meals from Z to A
+  const sortZtoA = () => {
+    const sortedMeals = initialData.sort((a, b) => {
+      if (a.name < b.name) {
+        return 1;
+      }
+      if (a.name > b.name) {
+        return -1;
+      }
+      return 0;
+    });
+    setData(sortedMeals);
+    showSort();
   };
 
   const handleClearFilter = () => {
     setData(meals);
     setMaxPrice("");
+  };
+
+  const showSort = () => {
+    setFilterButton(false); // make sure to hide filter area
+    setSortButton(!sortOpen);
   };
 
   useEffect(() => {
@@ -63,13 +99,22 @@ const Results = ({ key, meals }) => {
       {initialData.length > 0 && (
         <div>
           <div className="text-center flex flex-col items-center relative">
-            <button
-              className="font-inter font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
-              type="button"
-              onClick={showFilter}
-            >
-              Filter
-            </button>
+            <div className="flex items-center space-x-5">
+              <button
+                className="font-inter font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
+                type="button"
+                onClick={showFilter}
+              >
+                Filter
+              </button>
+              <button
+                className="font-inter font-medium bg-blue-600 text-white px-4 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500 hover:bg-blue-800 active:bg-blue-400"
+                type="button"
+                onClick={showSort}
+              >
+                Sort
+              </button>
+            </div>
             {filterOpen && (
               <div className="bg-slate-200 rounded-lg w-[250px] absolute text-left p-3 z-50 top-[45px] drop-shadow-lg">
                 <div>
@@ -108,7 +153,28 @@ const Results = ({ key, meals }) => {
                 </div>
               </div>
             )}
+            {sortOpen && (
+              <div className="bg-slate-200 rounded-lg w-[250px] absolute text-left p-3 z-50 top-[45px] drop-shadow-lg">
+                <div className="relative text-center">
+                  <div className="border-slate-400 border-b-2">Sort Results</div>
+                  <IoMdCloseCircle
+                    onClick={showSort}
+                    className="hover:text-red-400 ml-3 absolute right-0 -top-0"
+                  />
+                </div>
+                <div className="text-center">
+                  <div className="drop-shadow-md cursor-pointer p-1" onClick={sortAtoZ}>
+                    Sort A to Z
+                  </div>
+                  <div className="drop-shadow-md cursor-pointer p-1" onClick={sortZtoA}>
+                    Sort Z to A
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
+
+          {/* Show results here */}
           <div className="grid md:grid-cols-4">
             {initialData.slice(0, displayCount).map((card) => (
               <Cards key={card.id} {...card} />

@@ -274,7 +274,9 @@ const SearchPage = () => {
           <span className="text-sm">Got questions, visit the FAQs Page</span>
         </Link>
       </div>
-      {searchSubmitted && meals && <Results key={meals.name} meals={meals} />}
+      {searchSubmitted && meals && (
+        <Results key={meals.name} meals={meals} dishTypes={dishTypes} />
+      )}
     </section>
   );
 };

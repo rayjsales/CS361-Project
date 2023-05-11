@@ -1,35 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 
-const FilterDishes = (props) => {
-  const [showDishes, setShowDishes] = useState(false);
+const FilterRestaurants = (props) => {
+  const [showRestaurants, setShowRestaurants] = useState(false);
+  const [distinctRest, setDistinctRest] = useState([]);
 
-  const handleShowDishes = () => {
-    setShowDishes(!showDishes);
+  const handleShowRestaurants = () => {
+    setShowRestaurants(!showRestaurants);
   };
 
-  const dishSelection = (selectedDish) => {
-    props.onSelect(selectedDish);
+  useEffect(() => {
+    const uniqueRest = [...new Set(props.data.map((item) => item.restaurant))];
+    setDistinctRest(uniqueRest);
+  }, [props.data]);
+
+  // Create a distinct array with the restaurants from the props
+
+  const restaurantSelection = (selectedRestaurant) => {
+    props.onRestaurantSelect(selectedRestaurant);
   };
 
   return (
     <div className="pt-2">
-      <p onClick={handleShowDishes} className="hover:italic cursor-pointer">
-        Select Dishes{" "}
-        {!showDishes && <MdKeyboardArrowDown className="inline-block text-xl" />}{" "}
-        {showDishes && <MdKeyboardArrowUp className="inline-block text-xl" />}
+      <p onClick={handleShowRestaurants} className="hover:italic cursor-pointer">
+        Select Restaurants{" "}
+        {!showRestaurants && <MdKeyboardArrowDown className="inline-block text-xl" />}{" "}
+        {showRestaurants && <MdKeyboardArrowUp className="inline-block text-xl" />}
       </p>
 
-      {showDishes && (
+      {showRestaurants && (
         <div className="h-24 overflow-y-scroll bg-slate-100">
-          {props.dishes.map((item, index) => (
+          {distinctRest.map((item, index) => (
             <div
               key={index}
-              value={item.category}
+              value={item}
               className="text-sm hover:bg-blue-200 p-[2px]"
-              onClick={() => dishSelection(item.category)}
+              onClick={() => restaurantSelection(item)}
             >
-              {item.category}
+              {item}
             </div>
           ))}
         </div>
@@ -38,4 +46,4 @@ const FilterDishes = (props) => {
   );
 };
 
-export default FilterDishes;
+export default FilterRestaurants;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { resultsTest } from "../constants";
 import Cards from "./Cards";
 import { IoMdCloseCircle } from "react-icons/io";
+import FilterRestaurants from "./FilterRestaurants";
 
 // When using a backend to get the data, need to pass in a parameter with the json and all the dish info
 const Results = ({ key, meals }) => {
@@ -10,6 +11,7 @@ const Results = ({ key, meals }) => {
   const [initialData, setData] = useState(meals);
   const [displayCount, setDisplayCount] = useState(12);
   const [sortOpen, setSortButton] = useState(false);
+  const [restaurantSelect, setRestaurant] = useState("");
 
   const showFilter = () => {
     setFilterButton(!filterOpen);
@@ -115,6 +117,10 @@ const Results = ({ key, meals }) => {
     showSort();
   };
 
+  const handleRestaurantSelect = (selectedRestaurant) => {
+    console.log(selectedRestaurant);
+  };
+
   useEffect(() => {
     setData(meals);
   }, [meals]);
@@ -147,7 +153,7 @@ const Results = ({ key, meals }) => {
               </button>
             </div>
             {filterOpen && (
-              <div className="bg-slate-200 rounded-lg w-[300px] absolute text-left p-3 z-50 top-[45px] drop-shadow-lg">
+              <div className="bg-slate-200 rounded-lg w-[500px] absolute text-left p-3 z-50 top-[45px] drop-shadow-lg">
                 <div>
                   <div className="float-right">
                     <IoMdCloseCircle
@@ -164,7 +170,13 @@ const Results = ({ key, meals }) => {
                         onChange={handleMaxPrice}
                         className="w-30 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       />
+                      <label>Restaurants</label>
+                      <FilterRestaurants
+                        data={initialData}
+                        onRestaurantSelect={handleRestaurantSelect}
+                      />
                     </div>
+
                     <div className="grid grid-cols-2 mt-4">
                       <button
                         type="submit"

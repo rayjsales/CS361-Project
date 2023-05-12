@@ -41,15 +41,15 @@ const FilterRestaurants = (props) => {
       {showRestaurants && (
         <div className="h-40 overflow-y-scroll bg-slate-100 p-3">
           {distinctRest.map((item, index) => (
-            <div className="" key={index}>
+            <div className="py-1" key={index} title={item}>
               <input
                 type="checkbox"
                 value={item}
                 checked={userSelected.includes(item)}
-                className="text-sm hover:bg-blue-200 p-[2px] inline-block"
+                className="text-sm hover:bg-blue-200 px-[2px] inline-block align-middle"
                 onChange={() => restaurantSelection(item)}
               />{" "}
-              <p key={index} className="inline-block w-[250px]">
+              <p key={index} className="inline-block truncate w-[250px] align-middle">
                 {item}
               </p>
             </div>

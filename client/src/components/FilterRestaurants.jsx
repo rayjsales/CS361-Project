@@ -21,9 +21,12 @@ const FilterRestaurants = (props) => {
     const selectedIndex = userSelected.indexOf(optionValue);
     let newSelectedItems = [...userSelected];
 
+    // Add in the selected item to the array
     if (selectedIndex === -1) {
       newSelectedItems.push(optionValue);
-    } else {
+    }
+    // Else, if selected, then remove the item from the array.
+    else {
       newSelectedItems.splice(selectedIndex, 1);
     }
     setUserSelected(newSelectedItems);
@@ -45,7 +48,7 @@ const FilterRestaurants = (props) => {
               <input
                 type="checkbox"
                 value={item}
-                checked={userSelected.includes(item)}
+                checked={userSelected.includes(item)} // f the item is in the selected array, it returns true and the checkbox is checked, otherwise, it returns false and the checkbox is unchecked.
                 className="text-sm hover:bg-blue-200 px-[2px] inline-block align-middle"
                 onChange={() => restaurantSelection(item)}
               />{" "}

@@ -11,7 +11,7 @@ const Results = ({ key, meals }) => {
   const [initialData, setData] = useState(meals);
   const [displayCount, setDisplayCount] = useState(12);
   const [sortOpen, setSortButton] = useState(false);
-  const [restaurantSelect, setRestaurant] = useState("");
+  const [restaurantSelect, setRestaurant] = useState([]);
 
   const showFilter = () => {
     setFilterButton(!filterOpen);
@@ -34,10 +34,27 @@ const Results = ({ key, meals }) => {
   // its 12.00 USD, where we want $12.00.
   const handleFilter = (e) => {
     e.preventDefault();
-    // Check if there is a max price has been inputted and no Dish Type
-    if (maxPrice !== "") {
+    // Check if there is a max price has been inputted and no restaurants
+    if (maxPrice !== "" && restaurantSelect.length == 0) {
       setData(
         initialData.filter(
+          (dish) => parseFloat(dish.price.slice(1)) <= parseFloat(maxPrice)
+        )
+      );
+      // Check if there is no max price and restaurants selected
+    } else if (maxPrice == "" && restaurantSelect.length > 0) {
+      const filteredData = initialData.filter((item) => {
+        return restaurantSelect.some((term) => item.restaurant.includes(term));
+      });
+      setData(filteredData);
+    }
+    // Filter if there is a max price and restaurants
+    else if (maxPrice !== "" && restaurantSelect.length > 0) {
+      const filteredData = initialData.filter((item) => {
+        return restaurantSelect.some((term) => item.restaurant.includes(term));
+      });
+      setData(
+        filteredData.filter(
           (dish) => parseFloat(dish.price.slice(1)) <= parseFloat(maxPrice)
         )
       );
@@ -118,7 +135,7 @@ const Results = ({ key, meals }) => {
   };
 
   const handleRestaurantSelect = (selectedRestaurant) => {
-    console.log(selectedRestaurant);
+    setRestaurant(selectedRestaurant);
   };
 
   useEffect(() => {
@@ -162,19 +179,25 @@ const Results = ({ key, meals }) => {
                     />
                   </div>
                   <form onSubmit={handleFilter}>
-                    <div className="grid grid-cols-2">
-                      <label>Max Price ($)</label>
-                      <input
-                        type="number"
-                        value={maxPrice}
-                        onChange={handleMaxPrice}
-                        className="w-30 bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      />
-                      <label>Restaurants</label>
-                      <FilterRestaurants
-                        data={initialData}
-                        onRestaurantSelect={handleRestaurantSelect}
-                      />
+                    <div className="">
+                      <div>
+                        <label className="inline-block mr-16">Max Price ($)</label>
+                        <input
+                          type="number"
+                          value={maxPrice}
+                          onChange={handleMaxPrice}
+                          className="w-30 inline-block bg-gray-50 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 -m-2"
+                        />
+                      </div>
+                      <div className="pt-3">
+                        <label className="inline-block mr-16 align-top">
+                          Restaurants
+                        </label>
+                        <FilterRestaurants
+                          data={initialData}
+                          onRestaurantSelect={handleRestaurantSelect}
+                        />
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 mt-4">

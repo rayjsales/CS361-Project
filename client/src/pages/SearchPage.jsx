@@ -33,6 +33,7 @@ const SearchPage = () => {
     getDishes(e);
   };
 
+  // Get dishes based on users selected city
   const getDishes = async (e) => {
     try {
       const response = await fetch(
@@ -45,6 +46,7 @@ const SearchPage = () => {
     }
   };
 
+  // Validate the cuisine section input criteria.
   const handleSection = (e) => {
     if (!cuisineValid) {
       setErrorMessage(true);
@@ -55,10 +57,12 @@ const SearchPage = () => {
     }
   };
 
+  // Set the dish based on user's selected dish.
   const handleDish = (e) => {
     setDish(e.target.value);
   };
 
+  // Get the meals based on the users selected cuisine, city, and dish selected
   async function handleSubmit(event) {
     event.preventDefault();
     const response = await fetch(
@@ -68,6 +72,7 @@ const SearchPage = () => {
     setMeals(data);
   }
 
+  // Set the city based on users selected city.
   const handleCity = (event) => {
     if (event.target.value == 0) {
       setValidLocation(false);
@@ -75,8 +80,8 @@ const SearchPage = () => {
     setCity(event.target.value);
   };
 
+  // Run API fetch here to get a list of all the cuisines. SearchTerm will be a string of 'city, state'. Pass this to the async to API
   const searchCuisinesFromCity = async (cityName) => {
-    // Run API fetch here to get a list of all the cuisines. SearchTerm will be a string of 'city, state'. Pass this to the async to API
     try {
       const response = await fetch(`http://localhost:9124/cuisines?param=${cityName}`);
       const data = await response.json();
@@ -109,6 +114,7 @@ const SearchPage = () => {
     }
   };
 
+  // Fetch the cities on page load
   const fetchCities = async () => {
     try {
       const response = await fetch("http://localhost:9124/cities");
@@ -127,12 +133,14 @@ const SearchPage = () => {
     }
   }, [meals]);
 
+  // Search based on typing in city
   const filteredCities = cities.filter((item) => {
     const searchTerm = city.toLowerCase();
     const cityName = item.city.toLowerCase();
     return searchTerm && cityName.startsWith(searchTerm) && cityName !== searchTerm;
   });
 
+  // Clear all input fields
   const handleClear = () => {
     // Clear all fields
     setCity("");

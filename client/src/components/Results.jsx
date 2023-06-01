@@ -13,11 +13,13 @@ const Results = ({ key, meals }) => {
   const [sortOpen, setSortButton] = useState(false);
   const [restaurantSelect, setRestaurant] = useState([]);
 
+  // Hide show filter
   const showFilter = () => {
     setFilterButton(!filterOpen);
     setSortButton(false);
   };
 
+  // Handle show more when clicking
   const handleShowMore = () => {
     if (displayCount + 12 < initialData.length) {
       setDisplayCount(displayCount + 12);
@@ -30,8 +32,7 @@ const Results = ({ key, meals }) => {
     setMaxPrice(e.target.value);
   };
 
-  // Filter function based on the prices. This may change depending on the string. Currently
-  // its 12.00 USD, where we want $12.00.
+  // Filter function based on the prices. This may change depending on the string.
   const handleFilter = (e) => {
     e.preventDefault();
     // Check if there is a max price has been inputted and no restaurants
@@ -104,7 +105,7 @@ const Results = ({ key, meals }) => {
     setSortButton(!sortOpen);
   };
 
-  // Sort the meal data based on the price
+  // Sort the meal data based on the price Low to High
   const priceLowHigh = () => {
     const sortedPrice = initialData.sort((a, b) => {
       if (a.price < b.price) {
@@ -119,7 +120,7 @@ const Results = ({ key, meals }) => {
     showSort();
   };
 
-  // Sort the meal data based on the price
+  // Sort the meal data based on the price High to Low
   const priceHighLow = () => {
     const sortedPrice = initialData.sort((a, b) => {
       if (a.price < b.price) {
@@ -134,6 +135,7 @@ const Results = ({ key, meals }) => {
     showSort();
   };
 
+  // Handle selected restaurant data
   const handleRestaurantSelect = (selectedRestaurant) => {
     setRestaurant(selectedRestaurant);
   };

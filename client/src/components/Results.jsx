@@ -32,7 +32,7 @@ const Results = ({ key, meals }) => {
     setMaxPrice(e.target.value);
   };
 
-  // Filter function based on the prices. This may change depending on the string.
+  // Filter function based on the prices.
   const handleFilter = (e) => {
     e.preventDefault();
     // Check if there is a max price has been inputted and no restaurants
@@ -108,10 +108,12 @@ const Results = ({ key, meals }) => {
   // Sort the meal data based on the price Low to High
   const priceLowHigh = () => {
     const sortedPrice = initialData.sort((a, b) => {
-      if (a.price < b.price) {
+      const price1 = parseFloat(a.price.slice(1));
+      const price2 = parseFloat(b.price.slice(1));
+      if (price1 < price2) {
         return -1;
       }
-      if (a.price > b.price) {
+      if (price1 > price2) {
         return 1;
       }
       return 0;
@@ -123,10 +125,12 @@ const Results = ({ key, meals }) => {
   // Sort the meal data based on the price High to Low
   const priceHighLow = () => {
     const sortedPrice = initialData.sort((a, b) => {
-      if (a.price < b.price) {
+      const price1 = parseFloat(a.price.slice(1));
+      const price2 = parseFloat(b.price.slice(1));
+      if (price1 < price2) {
         return 1;
       }
-      if (a.price > b.price) {
+      if (price1 > price2) {
         return -1;
       }
       return 0;

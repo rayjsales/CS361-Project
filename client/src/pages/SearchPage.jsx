@@ -19,6 +19,7 @@ const SearchPage = () => {
   const [meals, setMeals] = useState(null);
   const [cuisines, setCuisines] = useState([]);
 
+  // Get cuisine input and get the type of meals.
   const handleCuisine = (e) => {
     // Use API to get the type of dishes, based on the city entered and the Cuisine selected
     setCuisine(e.target.value);
